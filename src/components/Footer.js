@@ -1,11 +1,24 @@
-import React from 'react'
+import React from "react";
+import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { AiOutlineGlobal } from "react-icons/ai";
 
 function Footer() {
-    return (
-        <div>
-            
-        </div>
-    )
+  return (
+    <footer>
+      <a href="https://twitter.com/partha_sarma8">
+        <FaTwitter />
+      </a>
+      <a href="https://github.com/partha8">
+        <FaGithub />
+      </a>
+      <a href="https://www.linkedin.com/in/partha8/">
+        <FaLinkedin />
+      </a>
+      <a href="https://parthasarma.netlify.app/">
+        <AiOutlineGlobal />
+      </a>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;
