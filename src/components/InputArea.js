@@ -35,7 +35,7 @@ function InputArea() {
     } else {
       const [nextPalindrome, missedDays] = findNextPalindrome(dd, mm, yyyy);
       setText(
-        `Your birthdate is not a palindrome. Nearest palindrome date is ${nextPalindrome}, you missed it by ${missedDays}`
+        `Your birthdate is not a palindrome. Nearest palindrome date is ${nextPalindrome}, you missed it by ${missedDays} days`
       );
     }
   };

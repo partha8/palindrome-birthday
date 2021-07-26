@@ -11,7 +11,7 @@ function Header() {
             forward
           </p>
           <a
-            style={{ borderBottom: "1px solid hsl(205, 100%, 96%); " }}
+            style={{ borderBottom: "1px solid hsl(205, 100%, 96%) " }}
             href="#input"
             className="btn"
           >
