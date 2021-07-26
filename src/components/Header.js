@@ -10,7 +10,11 @@ function Header() {
             A palindrome is a word/number which reads the same backward as
             forward
           </p>
-          <a href="#input" className="btn">
+          <a
+            style={{ borderBottom: "1px solid hsl(205, 100%, 96%); " }}
+            href="#input"
+            className="btn"
+          >
             Let's Go!
           </a>
         </article>

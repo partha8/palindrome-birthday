@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import calculating from "../img/calculating.gif";
+import { getPalindrome, findNextPalindrome } from "./functions";
 
 function InputArea() {
   const [date, setDate] = useState("");
@@ -12,17 +13,31 @@ function InputArea() {
     const timeOut = setTimeout(() => {
       setLoadingImage(false);
       setLoading(false);
-    }, 2000);
-    
+    }, 2500);
+
     // clearnup function
     return () => clearTimeout(timeOut);
   }, [loading]);
 
   const clickHandler = (e) => {
     e.preventDefault();
+    console.log(typeof date);
+    if (date === "") {
+      setText("Enter a valid date");
+      return;
+    }
     setLoading(true);
     setLoadingImage(true);
-    setText('testing')
+    const [yyyy, mm, dd] = date.split("-");
+    const checkPalindrome = getPalindrome(dd, mm, yyyy);
+    if (checkPalindrome !== "") {
+      setText("WUUHUU! Your birthdate is a palindrome!");
+    } else {
+      const [nextPalindrome, missedDays] = findNextPalindrome(dd, mm, yyyy);
+      setText(
+        `Your birthdate is not a palindrome. Nearest palindrome date is ${nextPalindrome}, you missed it by ${missedDays}`
+      );
+    }
   };
   return (
     <div id="input">
@@ -35,9 +50,10 @@ function InputArea() {
             </h2>
             <p>
               This app checks your birthdate in 4 formats dd-mm-yyyy,
-              mm-dd-yyyy, mm-dd-yy, and yyyy-mm-dd e.g. if your birthdate is 01
-              Jan 2000, then app will check for 01012000, 01012000, 010100, and
-              20000101
+              mm-dd-yyyy, mm-dd-yy, and yyyy-mm-dd
+              <br />
+              e.g. if your birthdate is 08-10-1999, then app will check for
+              08101999, 10081999, 100899, and 19991008
             </p>
           </article>
           <article>
@@ -55,9 +71,7 @@ function InputArea() {
           </article>
         </form>
         <section className="output">
-          <article className="output-text">
-            {loading && <p>Please wait for the results</p>}
-          </article>
+          <article>{loading && <p>Please wait for the results</p>}</article>
           {loadingImage && (
             <img
               className="loading-image"
@@ -65,7 +79,9 @@ function InputArea() {
               alt="calculating results"
             />
           )}
-          {!loading && <h3>{text}</h3>}
+          <article className="output-text">
+            {!loading && <h3 className="output-text">{text}</h3>}
+          </article>
         </section>
       </section>
     </div>

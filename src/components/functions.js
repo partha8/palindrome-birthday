@@ -1,111 +1,109 @@
-export const checkPalindrome = (birthDayString) => {
-  const splitedBirthDayString = birthDayString.split("");
-  const reversedSplitedBirthDayString = splitedBirthDayString.reverse();
-  const reversedBirthDayString = reversedSplitedBirthDayString.join("");
+const datesInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  return birthDayString === reversedBirthDayString;
+export const checkPalindrome = (birthdate) => {
+  const birthdateArr = birthdate.split("");
+  const reversedBirthdateArr = birthdateArr.reverse();
+  const reversedBirthdate = reversedBirthdateArr.join("");
+
+  return birthdate === reversedBirthdate;
 };
 
-export const getPalindromeFormat = (date, month, year) => {
-  // first format
-  if (checkPalindrome(date + month + year)) return `${date}-${month}-${year}`;
+export const getPalindrome = (dd, mm, yyyy) => {
+  if (checkPalindrome(dd + mm + yyyy)) return `${dd}-${mm}-${yyyy}`;
 
-  // second format
-  if (checkPalindrome(month + date + year)) return `${month}-${date}-${year}`;
+  if (checkPalindrome(mm + dd + yyyy)) return `${mm}-${dd}-${yyyy}`;
 
-  // third format
-  if (checkPalindrome(month + date + year.substring(2)))
-    return `${month}-${date}-${year.substring(2)}`;
+  if (checkPalindrome(mm + dd + yyyy.substring(2)))
+    return `${mm}-${dd}-${yyyy.substring(2)}`;
 
-  // fourth format
-  if (checkPalindrome(year + month + date)) return `${year}-${month}-${date}`;
+  if (checkPalindrome(yyyy + mm + dd)) return `${yyyy}-${mm}-${dd}`;
 
   return "";
 };
 
-export const checkCurrentDateIsPalindromeOrNot = (date, month, year) => {
-  let yearStr = String(year);
-  let monthStr = String(month);
-  let dateStr = String(date);
+const getPalindromeHelper = (date, month, year) => {
+  let yearString = String(year);
+  let monthString = String(month);
+  let dateString = String(date);
 
-  if (monthStr.length === 1) monthStr = "0" + monthStr;
+  if (monthString.length === 1) monthString = "0" + monthString;
 
-  if (dateStr.length === 1) dateStr = "0" + dateStr;
+  if (dateString.length === 1) dateString = "0" + dateString;
 
-  return getPalindromeFormat(dateStr, monthStr, yearStr);
+  return getPalindrome(dateString, monthString, yearString);
 };
 
-export const daysInMonth = (month) => {
-  return [
-    31,
-    Number(`${new Date().getFullYear() % 4 ? 29 : 28}`),
-    31,
-    30,
-    31,
-    30,
-    31,
-    31,
-    30,
-    31,
-    30,
-    31,
-  ][month];
-};
+export const findNextPalindrome = (dd, mm, yyyy) => {
+  let forwardDate = Number(dd);
+  let backwardDate = Number(dd);
 
-export const findNearestPalindromeDateAndMissedDays = (date, month, year) => {
-  let forwardDate = Number(date);
-  let backwardDate = Number(date);
+  let forwardMonth = Number(mm);
+  let backwardMonth = Number(mm);
 
-  let forwardMonth = Number(month);
-  let backwardMonth = Number(month);
-
-  let forwardYear = Number(year);
-  let backwardYear = Number(year);
+  let forwardYear = Number(yyyy);
+  let backwardYear = Number(yyyy);
 
   let missedDays = 0;
   while (true) {
-    missedDays += 1;
+    missedDays++;
+    console.log(missedDays);
 
-    // check after birthdate
-    forwardDate += 1;
-    if (forwardDate > daysInMonth(forwardMonth - 1)) {
+    forwardDate++;
+
+    let max_days;
+    if (
+      forwardMonth === 2 &&
+      ((forwardYear % 4 === 0 && forwardYear % 100 !== 0) ||
+        forwardYear % 400 === 0)
+    ) {
+      max_days = 29;
+    } else {
+      max_days = datesInMonth[forwardMonth - 1];
+    }
+    if (forwardDate > max_days) {
       forwardDate = 1;
-      forwardMonth += 1;
-
+      forwardMonth++;
       if (forwardMonth > 12) {
         forwardMonth = 1;
-        forwardYear += 1;
+        forwardYear++;
       }
     }
-
-    const forwardPalindromeFormat = checkCurrentDateIsPalindromeOrNot(
+    const forwardPalindromeFormat = getPalindromeHelper(
       forwardDate,
       forwardMonth,
       forwardYear
     );
+
     if (forwardPalindromeFormat !== "")
       return [forwardPalindromeFormat, missedDays];
 
     // check before birthdate
-    backwardDate -= 1;
+    backwardDate--;
     if (backwardDate < 1) {
-      backwardMonth -= 1;
+      backwardMonth--;
 
       if (backwardMonth < 1) {
-        backwardYear -= 1;
+        backwardYear--;
 
         if (backwardYear < 1) {
           return ["", ""];
         } else {
           backwardMonth = 12;
           backwardDate = 31;
-        } // end else
+        }
       } else {
-        backwardDate = daysInMonth(backwardMonth - 1);
-      } // end else
-    } // end if
+        if (
+          backwardMonth === 2 &&
+          ((yyyy % 4 === 0 && yyyy % 100 !== 0) || yyyy % 400 === 0)
+        ) {
+          backwardDate = 29;
+        } else {
+          backwardDate = datesInMonth[backwardMonth - 1];
+        }
+      }
+    }
 
-    const backwardPalindromeFormat = checkCurrentDateIsPalindromeOrNot(
+    const backwardPalindromeFormat = getPalindromeHelper(
       backwardDate,
       backwardMonth,
       backwardYear

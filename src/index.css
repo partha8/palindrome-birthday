@@ -187,9 +187,14 @@ img {
 .form-container p {
   color: var(--clr-grey-1);
 }
-.output-text p {
+.output p {
   color: var(--clr-grey-1);
 }
+.output-text{
+  width: 85%;
+  margin: auto;
+}
+
 input {
   font-weight: 600;
   padding-left: 10px;
