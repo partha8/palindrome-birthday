@@ -16,6 +16,9 @@ export const getPalindrome = (dd, mm, yyyy) => {
   if (checkPalindrome(mm + dd + yyyy.substring(2)))
     return `${mm}-${dd}-${yyyy.substring(2)}`;
 
+  if (checkPalindrome(dd + mm + yyyy.substring(2)))
+    return `${dd}-${mm}-${yyyy.substring(2)}`;
+
   if (checkPalindrome(yyyy + mm + dd)) return `${yyyy}-${mm}-${dd}`;
 
   return "";
